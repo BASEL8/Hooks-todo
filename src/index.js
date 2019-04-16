@@ -66,17 +66,20 @@ function TodosList() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (editMode) {
-      dispatch({
-        type: "editTodo",
-        id,
-        text: value
-      });
-      setEditMode({ editMode: false, id: "" });
+      if (value !== "") {
+        dispatch({
+          type: "editTodo",
+          id,
+          text: value
+        });
+        setEditMode({ editMode: false, id: "" });
+      }
     } else {
-      dispatch({
-        type: "addTodo",
-        todo: { id: uuidv1(), text: value, complete: false }
-      });
+      value !== "" &&
+        dispatch({
+          type: "addTodo",
+          todo: { id: uuidv1(), text: value, complete: false }
+        });
     }
     setValue("");
   };
