@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from "react";
+import React, { useContext, useReducer, useState, useRef } from "react";
 import ReactDOM from "react-dom";
 import uuidv1 from "uuid/v1";
 function reducer(state, action) {
@@ -39,7 +39,7 @@ const TodosContext = React.createContext({
   todos: [
     {
       id: 0,
-      text: "Hooks Todo List :)",
+      text: "Hooks Todo List :))",
       complete: true
     }
   ]
@@ -62,6 +62,7 @@ function TodosList() {
     editMode: false,
     id: ""
   });
+  const input = useRef();
   const handleSubmit = (event) => {
     event.preventDefault();
     if (editMode) {
@@ -89,6 +90,7 @@ function TodosList() {
     dispatch({ type: "deleteTodo", id });
   };
   const handleEdit = (id, text) => {
+    input.current.focus();
     setEditMode({ editMode: true, id });
     setValue(text);
   };
@@ -107,7 +109,12 @@ function TodosList() {
         </li>
       ))}
       <form onSubmit={handleSubmit}>
-        <input onChange={handleChange} value={value} placeholder="Add Todos" />
+        <input
+          onChange={handleChange}
+          value={value}
+          placeholder="Add Todos"
+          ref={input}
+        />
       </form>
     </div>
   );
